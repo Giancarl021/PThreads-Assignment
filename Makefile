@@ -1,16 +1,13 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror -Wno-unused-result -std=gnu99 -O3
 CLIBS=
-SRC=primes test
+SRC=primes
 OUT=T
 SRC_DIR=src
 BUILD_DIR=build
 
 SRC_PATH=$(addprefix $(SRC_DIR:=/),$(SRC))
 BUILD_OUT=$(addprefix $(BUILD_DIR:=/),$(SRC))
-
-$(info $(BUILD_DIR))
-$(info $(BUILD_OUT))
 
 all: $(OUT)
 
