@@ -57,9 +57,6 @@ void *handler(void *args) {
 
         // Unlock the mutex, to allow other threads to access the data
         pthread_mutex_unlock(parallel_args->lock);
-
-        // Sleep for 1/100th of a second, to avoid a single thread to always grab the mutex lock
-        // sleep(.001);
     }
     
     return NULL;

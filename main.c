@@ -93,8 +93,9 @@ int main(int argc, char *argv[]) {
 
     // Print the results
     printf(
-        "\nFINALIZADO\n%s%d números primos foram encontrados\n",
-        PADDING,
+        "\nFINALIZADO\n"
+        PADDING
+        "%d números primos foram encontrados\n",
         count
     );
 
