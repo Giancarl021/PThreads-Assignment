@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 
+// Calculates if a number is prime. NOTE: Computing intensive
 bool is_prime(int number);
 
 #ifdef __cplusplus

@@ -7,6 +7,7 @@ extern "C" {
 
 #include <stdbool.h>
 
+// Defines the arguments for the parallel handler function
 typedef struct {
     int *current_number;
     pthread_mutex_t *lock;
@@ -14,6 +15,7 @@ typedef struct {
     int *prime_count;
 } parallel_args_t;
 
+// Defines the handler function for the parallel threads
 void *handler(void *args);
 
 #ifdef __cplusplus
