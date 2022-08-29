@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
     }
 
     pthread_mutex_destroy(&lock);
+    free(threads);
 
     printf(
         "\nFINALIZADO\n%s%d números primos foram encontrados\n",
