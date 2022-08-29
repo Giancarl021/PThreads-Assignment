@@ -20,6 +20,9 @@ int main(int argc, char *argv[]) {
     int number_range,
         thread_num;
 
+    // Change the random seed based on time
+    srand(time(NULL));
+
     // If at least one argument were passed, try to parse them
     if (argc >= 2) {
         // string to int conversion on first argument

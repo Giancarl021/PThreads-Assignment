@@ -1,9 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include "primes.h"
+
+#define CHUNK_MIN_SIZE 10
+#define CHUNK_MAX_SIZE 500
 
 // Defines the arguments for the parallel handler function
 typedef struct {
@@ -24,24 +28,38 @@ void *handler(void *args) {
     while (*parallel_args->current_number <= parallel_args->max_number) {
         // Lock the mutex, to avoid concurrency
         pthread_mutex_lock(parallel_args->lock);
+        int chunk_size = (rand() % (CHUNK_MAX_SIZE - CHUNK_MIN_SIZE + 1)) + CHUNK_MIN_SIZE;
 
-        // Get the next number to process
-        int num = *(int *)parallel_args->current_number;
-        // Process the number
-        bool prime = is_prime(num);
-        // Print the result found
-        printf("Thread %lu: %d %sé número primo\n", tid, num, prime ? "" : "não ");
+        if ((*parallel_args->current_number) + chunk_size > parallel_args->max_number)
+            chunk_size = parallel_args->max_number - (*parallel_args->current_number) + 1;
 
-        // Increments the next number to process
-        (*(parallel_args->current_number))++;
+        int initial = (*parallel_args->current_number);
+
+        (*(parallel_args->current_number)) += chunk_size;
+    
+        pthread_mutex_unlock(parallel_args->lock);
+
+        int l = initial + chunk_size,
+            counter = 0;
+
+        for (int i = initial; i < l; i++) {
+            // Process the number
+            bool prime = is_prime(i);
+            if (prime) counter++;
+
+            // Print the result found
+            printf("Thread %lu: %d %sé número primo\n", tid, i, prime ? "" : "não ");
+        }
+
+        pthread_mutex_lock(parallel_args->lock);
         // Increment the prime count if the number is prime
-        (*(parallel_args->prime_count)) += prime ? 1 : 0;
+        (*(parallel_args->prime_count)) += counter;
 
         // Unlock the mutex, to allow other threads to access the data
         pthread_mutex_unlock(parallel_args->lock);
 
         // Sleep for 1/100th of a second, to avoid a single thread to always grab the mutex lock
-        sleep(.001);
+        // sleep(.001);
     }
     
     return NULL;
